@@ -665,17 +665,18 @@ static void free_picture(Frame *vp)
 static int g_fps_counter = 0;
 static int64_t g_fps_total_time = 0;
 #endif
-static void video_image_display2(FFPlayer *ffp)
+static int video_image_display2(FFPlayer *ffp)
 {
     VideoState *is = ffp->is;
     Frame *vp;
 
     vp = frame_queue_peek(&is->pictq);
+    int result = -1;
     if (vp->bmp) {
 #ifdef FFP_SHOW_FPS
         int64_t start = SDL_GetTickHR();
 #endif
-        SDL_VoutDisplayYUVOverlay(ffp->vout, vp->bmp);
+        result = SDL_VoutDisplayYUVOverlay(ffp->vout, vp->bmp);
 #ifdef FFP_SHOW_FPS
         int64_t dur = SDL_GetTickHR() - start;
         g_fps_total_time += dur;
@@ -694,6 +695,7 @@ static void video_image_display2(FFPlayer *ffp)
         }
 #endif
     }
+    return result;
 }
 
 // FFP_MERGE: compute_mod
@@ -736,11 +738,12 @@ static void stream_close(VideoState *is)
 // FFP_MERGE: video_display
 
 /* display the current picture, if any */
-static void video_display2(FFPlayer *ffp)
+static int video_display2(FFPlayer *ffp)
 {
     VideoState *is = ffp->is;
     if (is->video_st)
-        video_image_display2(ffp);
+        return video_image_display2(ffp);
+    return -1;
 }
 
 static double get_clock(Clock *c)
@@ -966,6 +969,7 @@ static void video_refresh(FFPlayer *opaque, double *remaining_time)
     FFPlayer *ffp = opaque;
     VideoState *is = ffp->is;
     double time;
+    int result = -1;
 
 #ifdef FFP_MERGE
     Frame *sp, *sp2;
@@ -1051,12 +1055,12 @@ retry:
 display:
             /* display picture */
             if (!ffp->display_disable && is->show_mode == SHOW_MODE_VIDEO)
-                video_display2(ffp);
+                result = video_display2(ffp);
 
             frame_queue_next(&is->pictq);
 
             SDL_LockMutex(ffp->is->play_mutex);
-            if (is->step) {
+            if (is->step && result != -1) {
                 is->step = 0;
                 if (!is->paused)
                     stream_update_pause_l(ffp);
@@ -2478,8 +2482,10 @@ static int read_thread(void *arg)
     if (ffp->infinite_buffer < 0 && is->realtime)
         ffp->infinite_buffer = 1;
 
-    if (!ffp->start_on_prepared)
+    if (!ffp->start_on_prepared) {
         toggle_pause(ffp, 1);
+        step_to_next_frame_l(ffp);
+    }
     ffp->prepared = true;
     ffp_notify_msg1(ffp, FFP_MSG_PREPARED);
     if (is->video_st && is->video_st->codec) {
@@ -2487,11 +2493,11 @@ static int read_thread(void *arg)
         ffp_notify_msg3(ffp, FFP_MSG_VIDEO_SIZE_CHANGED, avctx->width, avctx->height);
         ffp_notify_msg3(ffp, FFP_MSG_SAR_CHANGED, avctx->sample_aspect_ratio.num, avctx->sample_aspect_ratio.den);
     }
-    if (!ffp->start_on_prepared) {
-        while (is->pause_req && !is->abort_request) {
-            SDL_Delay(100);
-        }
-    }
+//    if (!ffp->start_on_prepared) {
+//        while (is->pause_req && !is->abort_request) {
+//            SDL_Delay(100);
+//        }
+//    }
     if (ffp->auto_resume) {
         ffp_notify_msg1(ffp, FFP_REQ_START);
         ffp->auto_resume = 0;
