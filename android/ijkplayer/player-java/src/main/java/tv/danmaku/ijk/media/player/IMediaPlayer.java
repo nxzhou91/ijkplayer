@@ -16,13 +16,13 @@
 
 package tv.danmaku.ijk.media.player;
 
-import java.io.IOException;
-
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.os.Build;
 import android.view.Surface;
 import android.view.SurfaceHolder;
+
+import java.io.IOException;
 
 public interface IMediaPlayer {
     /*
@@ -105,6 +105,8 @@ public interface IMediaPlayer {
 
     public abstract void setOnInfoListener(OnInfoListener listener);
 
+    public abstract void setOnVideoOpenListener(OnVideoOpenListener listener);
+
     /*--------------------
      * Listeners
      */
@@ -135,6 +137,10 @@ public interface IMediaPlayer {
 
     public static interface OnInfoListener {
         public boolean onInfo(IMediaPlayer mp, int what, int extra);
+    }
+
+    public static interface OnVideoOpenListener {
+        public void onOpen(IMediaPlayer mp, boolean success);
     }
 
     /*--------------------
