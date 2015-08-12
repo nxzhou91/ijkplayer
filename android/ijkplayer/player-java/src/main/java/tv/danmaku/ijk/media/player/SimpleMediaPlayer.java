@@ -30,6 +30,11 @@ public abstract class SimpleMediaPlayer extends BaseMediaPlayer implements
     private OnVideoSizeChangedListener mOnVideoSizeChangedListener;
     private OnErrorListener mOnErrorListener;
     private OnInfoListener mOnInfoListener;
+    private OnVideoOpenListener mOnVideoOpenListener;
+
+    public final void setOnVideoOpenListener(OnVideoOpenListener listener) {
+        mOnVideoOpenListener = listener;
+    }
 
     public final void setOnPreparedListener(OnPreparedListener listener) {
         mOnPreparedListener = listener;
@@ -105,7 +110,7 @@ public abstract class SimpleMediaPlayer extends BaseMediaPlayer implements
             int sarNum, int sarDen) {
         if (mOnVideoSizeChangedListener != null)
             mOnVideoSizeChangedListener.onVideoSizeChanged(this, width, height,
-                    sarNum, sarDen);
+                sarNum, sarDen);
     }
 
     protected final boolean notifyOnError(int what, int extra) {
@@ -118,5 +123,10 @@ public abstract class SimpleMediaPlayer extends BaseMediaPlayer implements
         if (mOnInfoListener != null)
             return mOnInfoListener.onInfo(this, what, extra);
         return false;
+    }
+
+    protected final void notifyOnVideoOpen(int what) {
+        if (mOnVideoOpenListener != null)
+            mOnVideoOpenListener.onOpen(this, what == 0);
     }
 }
