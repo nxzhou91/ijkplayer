@@ -60,6 +60,7 @@ public final class IjkMediaPlayer extends SimpleMediaPlayer {
     private static final int MEDIA_TIMED_TEXT = 99;
     private static final int MEDIA_ERROR = 100;
     private static final int MEDIA_INFO = 200;
+    private static final int MEDIA_VIDEO_OPEN = 10032;
 
     protected static final int MEDIA_SET_VIDEO_SAR = 10001;
 
@@ -646,6 +647,10 @@ public final class IjkMediaPlayer extends SimpleMediaPlayer {
                 player.mVideoSarDen = msg.arg2;
                 player.notifyOnVideoSizeChanged(player.mVideoWidth, player.mVideoHeight,
                         player.mVideoSarNum, player.mVideoSarDen);
+                break;
+
+            case MEDIA_VIDEO_OPEN:
+                player.notifyOnVideoOpen(msg.arg1);
                 break;
 
             default:
