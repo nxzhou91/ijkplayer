@@ -243,6 +243,21 @@ public class MediaPlayerProxy implements IMediaPlayer {
     }
 
     @Override
+    public void setOnVideoOpenListener(OnVideoOpenListener listener) {
+        if (listener != null) {
+            final OnVideoOpenListener finalListener = listener;
+            mBackEndMediaPlayer.setOnVideoOpenListener(new OnVideoOpenListener() {
+                @Override
+                public void onOpen(IMediaPlayer mp, boolean success) {
+                    finalListener.onOpen(MediaPlayerProxy.this, success);
+                }
+            });
+        } else {
+            mBackEndMediaPlayer.setOnVideoOpenListener(null);
+        }
+    }
+
+    @Override
     public void setAudioStreamType(int streamtype) {
         mBackEndMediaPlayer.setAudioStreamType(streamtype);
     }
