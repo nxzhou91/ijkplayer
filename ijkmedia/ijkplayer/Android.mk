@@ -60,8 +60,8 @@ LOCAL_SRC_FILES += ijkavformat/ijksegment.c
 LOCAL_SRC_FILES += ijkavformat/ijkurlhook.c
 LOCAL_SRC_FILES += ijkavformat/utils.c
 
-LOCAL_SHARED_LIBRARIES := ijkffmpeg ijksdl
+LOCAL_SHARED_LIBRARIES := ijkffmpeg1 ijksdl1
 LOCAL_STATIC_LIBRARIES := android-ndk-profiler
 
-LOCAL_MODULE := ijkplayer
+LOCAL_MODULE := ijkplayer1
 include $(BUILD_SHARED_LIBRARY)
