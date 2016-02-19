@@ -132,6 +132,8 @@ public interface IMediaPlayer {
 
     void setOnInfoListener(OnInfoListener listener);
 
+    void setOnVideoOpenListener(OnVideoOpenListener listener);
+
     /*--------------------
      * Listeners
      */
@@ -162,6 +164,10 @@ public interface IMediaPlayer {
 
     interface OnInfoListener {
         boolean onInfo(IMediaPlayer mp, int what, int extra);
+    }
+
+    interface OnVideoOpenListener {
+        void onOpen(IMediaPlayer mp, boolean success);
     }
 
     /*--------------------

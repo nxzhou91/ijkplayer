@@ -42,6 +42,11 @@ public class MediaPlayerProxy implements IMediaPlayer {
     }
 
     @Override
+    public void setOnVideoOpenListener(OnVideoOpenListener listener) {
+
+    }
+
+    @Override
     public void setDisplay(SurfaceHolder sh) {
         mBackEndMediaPlayer.setDisplay(sh);
     }

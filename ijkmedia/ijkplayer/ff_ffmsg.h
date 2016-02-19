@@ -41,6 +41,8 @@
 #define FFP_MSG_SEEK_COMPLETE               600
 #define FFP_MSG_PLAYBACK_STATE_CHANGED      700
 
+#define FFP_MSG_OPEN_VIDEO_STREAM           10032
+
 #define FFP_MSG_VIDEO_DECODER_OPEN          10001
 
 #define FFP_REQ_START                       20001
