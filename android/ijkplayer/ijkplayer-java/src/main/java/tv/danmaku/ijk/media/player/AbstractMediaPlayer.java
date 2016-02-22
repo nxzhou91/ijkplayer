@@ -27,6 +27,11 @@ public abstract class AbstractMediaPlayer implements IMediaPlayer {
     private OnVideoSizeChangedListener mOnVideoSizeChangedListener;
     private OnErrorListener mOnErrorListener;
     private OnInfoListener mOnInfoListener;
+    private OnVideoOpenListener mOnVideoOpenListener;
+
+    public final void setOnVideoOpenListener(OnVideoOpenListener listener) {
+        mOnVideoOpenListener = listener;
+    }
 
     public final void setOnPreparedListener(OnPreparedListener listener) {
         mOnPreparedListener = listener;
@@ -101,6 +106,11 @@ public abstract class AbstractMediaPlayer implements IMediaPlayer {
 
     protected final boolean notifyOnInfo(int what, int extra) {
         return mOnInfoListener != null && mOnInfoListener.onInfo(this, what, extra);
+    }
+
+    protected final void notifyOnVideoOpen(int what) {
+        if (mOnVideoOpenListener != null)
+            mOnVideoOpenListener.onOpen(this, what >= 0);
     }
 
     public void setDataSource(IMediaDataSource mediaDataSource) {

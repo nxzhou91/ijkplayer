@@ -2441,6 +2441,7 @@ static int read_thread(void *arg)
         is->iformat = av_find_input_format(ffp->iformat_name);
     err = avformat_open_input(&ic, is->filename, is->iformat, &ffp->format_opts);
     if (err < 0) {
+        ffp_notify_msg2(ffp, FFP_MSG_OPEN_VIDEO_STREAM, err);
         print_error(is->filename, err);
         ret = -1;
         goto fail;
@@ -2580,6 +2581,7 @@ static int read_thread(void *arg)
     if (st_index[AVMEDIA_TYPE_VIDEO] >= 0) {
         ret = stream_component_open(ffp, st_index[AVMEDIA_TYPE_VIDEO]);
     }
+    ffp_notify_msg2(ffp, FFP_MSG_OPEN_VIDEO_STREAM, ret);
     if (is->show_mode == SHOW_MODE_NONE)
         is->show_mode = ret >= 0 ? SHOW_MODE_VIDEO : SHOW_MODE_RDFT;
 
