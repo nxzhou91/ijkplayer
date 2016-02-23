@@ -1,0 +1,26 @@
+diff --git a/libavformat/librtmp.c b/libavformat/librtmp.c
+index bfa9a71..f8c6d79 100644
+--- a/libavformat/librtmp.c
++++ b/libavformat/librtmp.c
+@@ -309,7 +309,7 @@ static int rtmp_get_file_handle(URLContext *s)
+ #define ENC AV_OPT_FLAG_ENCODING_PARAM
+ static const AVOption options[] = {
+     {"rtmp_app", "Name of application to connect to on the RTMP server", OFFSET(app), AV_OPT_TYPE_STRING, {.str = NULL }, 0, 0, DEC|ENC},
+-    {"rtmp_buffer", "Set buffer time in milliseconds. The default is 3000.", OFFSET(client_buffer_time), AV_OPT_TYPE_STRING, {.str = "3000"}, 0, 0, DEC|ENC},
++    {"rtmp_buffer", "Set buffer time in milliseconds. The default is 1000.", OFFSET(client_buffer_time), AV_OPT_TYPE_STRING, {.str = "1000"}, 0, 0, DEC|ENC},
+     {"rtmp_conn", "Append arbitrary AMF data to the Connect message", OFFSET(conn), AV_OPT_TYPE_STRING, {.str = NULL }, 0, 0, DEC|ENC},
+     {"rtmp_flashver", "Version of the Flash plugin used to run the SWF player.", OFFSET(flashver), AV_OPT_TYPE_STRING, {.str = NULL }, 0, 0, DEC|ENC},
+     {"rtmp_live", "Specify that the media is a live stream.", OFFSET(live), AV_OPT_TYPE_INT, {.i64 = 0}, INT_MIN, INT_MAX, DEC, "rtmp_live"},
+diff --git a/libavformat/rtmpproto.c b/libavformat/rtmpproto.c
+index 51d9ac6..e94b610 100644
+--- a/libavformat/rtmpproto.c
++++ b/libavformat/rtmpproto.c
+@@ -3077,7 +3077,7 @@ static int rtmp_write(URLContext *s, const uint8_t *buf, int size)
+ 
+ static const AVOption rtmp_options[] = {
+     {"rtmp_app", "Name of application to connect to on the RTMP server", OFFSET(app), AV_OPT_TYPE_STRING, {.str = NULL }, 0, 0, DEC|ENC},
+-    {"rtmp_buffer", "Set buffer time in milliseconds. The default is 3000.", OFFSET(client_buffer_time), AV_OPT_TYPE_INT, {.i64 = 3000}, 0, INT_MAX, DEC|ENC},
++    {"rtmp_buffer", "Set buffer time in milliseconds. The default is 1000.", OFFSET(client_buffer_time), AV_OPT_TYPE_INT, {.i64 = 1000}, 0, INT_MAX, DEC|ENC},
+     {"rtmp_conn", "Append arbitrary AMF data to the Connect message", OFFSET(conn), AV_OPT_TYPE_STRING, {.str = NULL }, 0, 0, DEC|ENC},
+     {"rtmp_flashver", "Version of the Flash plugin used to run the SWF player.", OFFSET(flashver), AV_OPT_TYPE_STRING, {.str = NULL }, 0, 0, DEC|ENC},
+     {"rtmp_flush_interval", "Number of packets flushed in the same request (RTMPT only).", OFFSET(flush_interval), AV_OPT_TYPE_INT, {.i64 = 10}, 0, INT_MAX, ENC},

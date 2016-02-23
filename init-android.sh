@@ -20,6 +20,7 @@ IJK_FFMPEG_UPSTREAM=https://github.com/Bilibili/FFmpeg.git
 IJK_FFMPEG_FORK=https://github.com/Bilibili/FFmpeg.git
 IJK_FFMPEG_COMMIT=ff2.8--ijk0.4.1.1--dev0.3.3--rc4
 IJK_FFMPEG_LOCAL_REPO=extra/ffmpeg
+YUANQI_DIR=`pwd`
 
 set -e
 TOOLS=tools
@@ -33,6 +34,7 @@ function pull_fork()
     sh $TOOLS/pull-repo-ref.sh $IJK_FFMPEG_FORK android/contrib/ffmpeg-$1 ${IJK_FFMPEG_LOCAL_REPO}
     cd android/contrib/ffmpeg-$1
     git checkout ${IJK_FFMPEG_COMMIT} -B ijkplayer
+    git apply $YUANQI_DIR/yuanqi-ffmpeg.patch
     cd -
 }
 
